@@ -1,3 +1,3 @@
-# Vim
+# Tmux
 
-This cookbook installs vim for development purposes
+This cookbook installs tmux for development purposes
