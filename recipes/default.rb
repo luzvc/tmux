@@ -1,6 +1,6 @@
 include_recipe "apt"
 
-apt_repository "ppa:pi-rho/dev" do
+apt_repository "tmux" do
   uri          'http://ppa.launchpad.net/pi-rho/dev/ubuntu'
   distribution node['lsb']['codename']
   components   ['main']
