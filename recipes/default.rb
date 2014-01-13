@@ -10,6 +10,7 @@ apt_repository "tmux" do
 end
 
 package "tmux" do
+  options "--force-yes"
   action :upgrade
 end
 
