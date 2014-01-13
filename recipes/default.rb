@@ -1,31 +1,12 @@
 include_recipe "apt"
 
-package "libevent-dev"
-package "libncurses-dev"
-package "pkg-config"
-package "build-essential"
-
-bash "Compile tmux" do
-  code %Q{
-    cd /tmp
-    tar xzvf /tmp/tmux-1.8.tar.gz
-    rm /tmp/tmux-1.8.tar.gz
-    mv /tmp/tmux-1.8 /usr/local/src
-    cd /usr/local/src/tmux-1.8
-    autoreconf -fis
-    ./configure --prefix /usr/local/tmux-1.8
-    make
-    make install
-  }
-  action :nothing
+apt_repository "ppa:pi-rho/dev" do
+  uri          'http://ppa.launchpad.net/pi-rho/dev/ubuntu'
+  distribution node['lsb']['codename']
+  components   ['main']
 end
 
-remote_file "Download tmux" do
-  path "/tmp/tmux-1.8.tar.gz"
-  source "http://downloads.sourceforge.net/project/tmux/tmux/tmux-1.8/tmux-1.8.tar.gz"
-  not_if { File.exist?("/usr/local/src/tmux-1.8") }
-  notifies :run, "bash[Compile tmux]"
-end
+package "tmux"
 
 node['tmux']['users'].each do user
   remote_file "Create .tmux.conf" do
