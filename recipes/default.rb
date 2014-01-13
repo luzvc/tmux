@@ -4,6 +4,9 @@ apt_repository "tmux" do
   uri          'http://ppa.launchpad.net/pi-rho/dev/ubuntu'
   distribution node['lsb']['codename']
   components   ['main']
+  keyserver    'hkp://keyserver.ubuntu.com:80'
+  key          '69DFF912'
+  action       :add
 end
 
 package "tmux" do
