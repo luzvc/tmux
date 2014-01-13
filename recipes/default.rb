@@ -6,7 +6,9 @@ apt_repository "tmux" do
   components   ['main']
 end
 
-package "tmux"
+package "tmux" do
+  action :upgrade
+end
 
 node['tmux']['users'].each do user
   remote_file "Create .tmux.conf" do
