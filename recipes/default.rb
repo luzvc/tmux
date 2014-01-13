@@ -14,7 +14,7 @@ package "tmux" do
   action :upgrade
 end
 
-node['tmux']['users'].each do user
+node['tmux']['users'].each do |user|
   remote_file "Create .tmux.conf" do
     path "/home/#{user}/.tmux.conf"
     user user
