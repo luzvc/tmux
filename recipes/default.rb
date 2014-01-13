@@ -18,7 +18,6 @@ bash "Compile tmux" do
     make install
   }
   action :nothing
-  notifies :create, "remote_file[Create .tmux.conf]"
 end
 
 remote_file "Download tmux" do
