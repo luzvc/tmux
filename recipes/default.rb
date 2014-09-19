@@ -18,7 +18,7 @@ node['tmux']['users'].each do |user|
   remote_file "Create .tmux.conf" do
     path "/home/#{user}/.tmux.conf"
     user user
-    source "https://gist.github.com/tdtadeu/b943f490845705e42165/raw/tmux.conf"
+    source "#{node['tmux']['gist']}"
     not_if { File.exists?("/home/#{user}/.tmux.conf") }
   end
 end
