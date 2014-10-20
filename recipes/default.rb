@@ -1,24 +1,43 @@
 include_recipe "apt"
 
-apt_repository "tmux" do
-  uri          'http://ppa.launchpad.net/pi-rho/dev/ubuntu'
-  distribution node['lsb']['codename']
-  components   ['main']
-  keyserver    'hkp://keyserver.ubuntu.com:80'
-  key          '69DFF912'
-  action       :add
+def setup_tmux(distribution, users, gist)
+  update_repository distribution
+  install_tmux_package
+
+  users.each do |user|
+    set_tmux_conf user, gist
+  end
 end
 
-package "tmux" do
-  options "--force-yes"
-  action :upgrade
+def update_repository(distribution)
+  apt_repository "tmux" do
+    uri          'http://ppa.launchpad.net/pi-rho/dev/ubuntu'
+    distribution distribution if distribution
+    components   ['main']
+    keyserver    'hkp://keyserver.ubuntu.com:80'
+    key          '69DFF912'
+    action       :add
+  end
 end
 
-node['tmux']['users'].each do |user|
+def install_tmux_package
+  package "tmux" do
+    options "--force-yes"
+    action :upgrade
+  end
+end
+
+def set_tmux_conf(user, gist)
   remote_file "Create .tmux.conf" do
     path "/home/#{user}/.tmux.conf"
     user user
-    source "#{node['tmux']['gist']}"
+    source gist
     not_if { File.exists?("/home/#{user}/.tmux.conf") }
   end
 end
+
+users = node[:tmux][:users]
+gist = node[:tmux][:gist]
+distribution = node[:lsb][:codename]
+
+setup_tmux(distribution, users, gist)

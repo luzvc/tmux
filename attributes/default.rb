@@ -1,1 +1,1 @@
-default['tmux']['users'] = []
+default[:tmux][:users] = []
