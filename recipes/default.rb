@@ -28,11 +28,13 @@ def install_tmux_package
 end
 
 def set_tmux_conf(user, gist)
-  remote_file "Create .tmux.conf" do
-    path "/home/#{user}/.tmux.conf"
-    user user
-    source gist
-    not_if { File.exists?("/home/#{user}/.tmux.conf") }
+  if gist && gist.length > 0
+    remote_file "Create .tmux.conf" do
+      path "/home/#{user}/.tmux.conf"
+      user user
+      source gist
+      not_if { File.exists?("/home/#{user}/.tmux.conf") }
+    end
   end
 end
 
